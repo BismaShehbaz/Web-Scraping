@@ -1,7 +1,9 @@
 # Project Name: Daraz Crochet Scraper
 
 ### 1. Project Overview
-* **Target Website:** [https://www.daraz.pk/](https://www.daraz.pk/)
+* **Target Website:** 
+  - https://www.daraz.pk/tag/hand-made-crochet-flower/
+  - https://www.daraz.pk/tag/crocheted-accessories/
 * **Data Fields Extracted:** Category, Name, Price, Rating, Source URL
 * **Tools Used:** Python, Selenium, WebDriver Manager
 
