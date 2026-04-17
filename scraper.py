@@ -15,6 +15,7 @@ options.add_argument("--disable-blink-features=AutomationControlled")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 wait = WebDriverWait(driver, 10)
 
+
 product_pages = [
     ("Handmade Crochet Flower", "https://www.daraz.pk/tag/hand-made-crochet-flower/"),
     ("Crocheted Accessories", "https://www.daraz.pk/tag/crocheted-accessories/"),
@@ -24,12 +25,18 @@ all_data = []
 
 for category, url in product_pages:
     print(f"Scraping {category}...")
+
     driver.get(url)
+
+    # wait for products to load
     wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[data-qa-locator='product-item']")))
+    
+    # Optional small scroll to load items
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(2)
+    time.sleep(2)  # small delay (important for anti-bot)
 
     products = driver.find_elements(By.CSS_SELECTOR, "div[data-qa-locator='product-item']")
+
     for product in products:
         try:
             try:
@@ -38,19 +45,39 @@ for category, url in product_pages:
                     name = product.find_element(By.CSS_SELECTOR, "a[title]").text.strip()
             except:
                 name = "N/A"
-            if name == "N/A": continue 
+
+            if name == "N/A":
+                continue 
+
             try:
                 price = product.find_element(By.CSS_SELECTOR, "span.ooOxS").text.strip()
-            except: price = ""
+            except:
+                price = ""
+
             try:
                 rating = product.find_element(By.CSS_SELECTOR, "span.qzqFw").text.strip()
-            except: rating = ""
+            except:
+                rating = ""
+
             try:
                 link = product.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
-            except: link = url
+            except:
+                link = url
+
             all_data.append([category, name, price, rating, link])
-        except: continue
+
+        except:
+            continue
+
+
     time.sleep(3)
 
 driver.quit()
-# Logic added. CSV Export will be added in final commit.
+
+# Save to CSV
+with open("crochet_products and accessories.csv", "w", newline="", encoding="utf-8-sig") as f:
+    writer = csv.writer(f)
+    writer.writerow(["Category", "Product Name", "Price (PKR)", "Rating", "Source URL"])
+    writer.writerows(all_data)
+
+print("Saved:", len(all_data), "products")
