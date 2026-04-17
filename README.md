@@ -8,7 +8,7 @@
 * **Tools Used:** Python, Selenium, WebDriver Manager
 
 ### 2. Setup Instructions
-1. Clone this repo: `git clone [Your Link]`
+1. Clone this repo: `git clone (https://github.com/BismaShehbaz/Web-Scraping.git)`
 2. Install dependencies: `pip install -r requirements.txt`
 3. Run script: `python scraper.py`
 
